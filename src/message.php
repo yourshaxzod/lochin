@@ -1,5 +1,5 @@
 <?php
-namespace Lochin\Shaxzod;
+namespace Shaxzod\Lochin;
 
 class Message {
     private $data;
@@ -19,7 +19,7 @@ class Message {
     }
 
     public function reply(string $text) {
-        $bot = new Bot($this->token);
+        $bot = new Lochin($this->token);
         $bot->apiRequest('sendMessage', [
             'chat_id' => $this->getChatId(),
             'text' => $text

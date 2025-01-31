@@ -1,7 +1,7 @@
 <?php
-namespace Lochin\Shaxzod;
+namespace Shaxzod\Lochin;
 
-class Bot {
+class Lochin {
     private $token;
     private $apiBaseUrl = 'https://api.telegram.org/bot';
     private $handlers = [];
@@ -63,7 +63,7 @@ class Bot {
                 $this->offset = $update['update_id'] + 1;
             }
             
-            usleep(100000); // 0.1 soniya kutish
+            usleep(100000);
         }
     }
 

@@ -1,5 +1,5 @@
 <?php
-namespace Lochin\Shaxzod;
+namespace Shaxzod\Lochin;
 
 class CallbackQuery {
     private $data;

@@ -6,7 +6,7 @@
     "homepage": "https://github.com/yourshaxzod/lochin",
     "autoload": {
         "psr-4": {
-            "Yourshaxzod\\Lochin\\": "src/"
+            "Shaxzod\\Lochin\\": "src/"
         }
     },
     "authors": [
