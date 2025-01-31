@@ -1,5 +1,5 @@
 <?php
-namespace Shaxzod\Lochin;
+namespace Lochin\Shaxzod;
 
 class Message {
     private $data;

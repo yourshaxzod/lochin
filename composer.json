@@ -1,17 +1,19 @@
 {
-    "name": "yourshaxzod/lochin",
+    "name": "lochin/shaxzod",
     "description": "PHP asosida tezkor va oson Telegram bot yaratish uchun yengil framework.",
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/yourshaxzod/lochin",
     "autoload": {
         "psr-4": {
-            "Shaxzod\\Lochin\\": "src/"
+            "Lochin\\Shaxzod\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "yourshaxzod"
+            "name": "Shaxzodbek Allaberganov",
+            "email": "yourshaxzod@gmail.com",
+            "homepage": "https://github.com/yourshaxzod"
         }
     ],
     "minimum-stability": "dev",
