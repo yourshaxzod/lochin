@@ -21,7 +21,7 @@ class Lochin
     private $mode;
     private $offset = 0;
 
-    public function __construct(string $token, ?Configuration $config)
+    public function __construct(string $token, ?Configuration $config = null)
     {
         if (empty($token)) {
             throw new InvalidArgumentException('The token cannot be empty.');
