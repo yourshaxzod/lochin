@@ -145,7 +145,7 @@ class Lochin
 
     public function apiRequest(string $method, array $params = [])
     {
-        $url = $this->config->getApiUrl() . $this->config->getToken() . '/' . $method;
+        $url = $this->config->getApiUrl() . '/bot' . $this->config->getToken() . '/' . $method;
 
         $context = stream_context_create([
             'http' => [
