@@ -6,20 +6,13 @@ use InvalidArgumentException;
 
 class Lochin
 {
-    /**
-     * @var string
-     */
     private string $token;
-
-    /**
-     * @var Configuration
-     */
     private Configuration $config;
-
-    private $handlers = [];
-    private $middleware = [];
-    private $mode;
-    private $offset = 0;
+    private array $handlers = [];
+    private array $middleware = [];
+    private array $textPatterns = [];
+    private string $mode;
+    private int $offset = 0;
 
     public function __construct(string $token, ?Configuration $config = null)
     {
@@ -37,10 +30,42 @@ class Lochin
         return $this;
     }
 
-    public function onCommand(string $command, callable $handler)
+    public function onCommand(string $command, callable $handler): self
     {
+        $command = trim($command, '/');
         $this->handlers['command'][$command] = $handler;
         return $this;
+    }
+
+    public function onText(string $pattern, callable $handler): self
+    {
+        $this->textPatterns[] = [
+            'pattern' => $this->convertPatternToRegex($pattern),
+            'original' => $pattern,
+            'handler' => $handler
+        ];
+
+        return $this;
+    }
+
+    private function convertPatternToRegex(string $pattern): string
+    {
+        return '/^' . preg_replace_callback('/\{(\w+)\}/', function ($matches) {
+            return "(?P<{$matches[1]}>.+?)";
+        }, preg_quote($pattern, '/')) . '$/';
+    }
+
+    public function sendMessage(string $text, array $extra = []): array
+    {
+        return $this->apiRequest('sendMessage', array_merge([
+            'chat_id' => $this->getCurrentChatId(),
+            'text' => $text
+        ], $extra));
+    }
+
+    private function getCurrentChatId(): ?int
+    {
+        return $this->currentUpdate['message']['chat']['id'] ?? null;
     }
 
     public function onCallbackQuery(callable $handler)
@@ -55,10 +80,10 @@ class Lochin
         return $this;
     }
 
-    public function run(string $mode = 'polling')
+    public function run(string $mode = 'polling'): void
     {
         $this->mode = $mode;
-        
+
         if ($this->mode === 'webhook') {
             $this->handleWebhook();
         } else {
@@ -66,7 +91,7 @@ class Lochin
         }
     }
 
-    private function handleWebhook()
+    private function handleWebhook(): void
     {
         $payload = json_decode(file_get_contents('php://input'), true);
 
@@ -79,7 +104,7 @@ class Lochin
         }
     }
 
-    private function startPolling()
+    private function startPolling(): void
     {
         while (true) {
             $updates = $this->getUpdates($this->offset);
@@ -93,7 +118,7 @@ class Lochin
         }
     }
 
-    private function processUpdate(array $update)
+    private function processUpdate(array $update): void
     {
         foreach ($this->middleware as $middleware) {
             $middleware($update);
@@ -108,19 +133,30 @@ class Lochin
         }
     }
 
-    private function handleMessage(array $message)
+    private function handleMessage(array $message): void
     {
-        $messageObj = new Message($message, $this->token);
+        if (isset($message['text']) && str_starts_with($message['text'], '/')) {
 
-        if (isset($message['text']) && $message['text'][0] === '/') {
-            $command = explode(' ', $message['text'])[0];
+            $parts = explode(' ', substr($message['text'], 1));
+            $command = $parts[0];
+
             if (isset($this->handlers['command'][$command])) {
-                $this->handlers['command'][$command]($messageObj);
+                call_user_func($this->handlers['command'][$command], $this);
+                return;
             }
         }
 
-        if (isset($this->handlers['message'])) {
-            $this->handlers['message']($messageObj);
+        if (isset($message['text'])) {
+            foreach ($this->textPatterns as $pattern) {
+                if (preg_match($pattern['pattern'], $message['text'], $matches)) {
+                    $params = array_filter($matches, function ($key) {
+                        return !is_numeric($key);
+                    }, ARRAY_FILTER_USE_KEY);
+
+                    call_user_func_array($pattern['handler'], [$this, ...array_values($params)]);
+                    return;
+                }
+            }
         }
     }
 
@@ -131,7 +167,7 @@ class Lochin
         }
     }
 
-    private function getUpdates()
+    private function getUpdates(): array
     {
         $response = $this->apiRequest('getUpdates', [
             'offset' => $this->offset,
@@ -143,7 +179,7 @@ class Lochin
         return $response['result'] ?? [];
     }
 
-    public function apiRequest(string $method, array $params = [])
+    public function apiRequest(string $method, array $params = []): array
     {
         $url = $this->config->getApiUrl() . '/bot' . $this->config->getToken() . '/' . $method;
 
