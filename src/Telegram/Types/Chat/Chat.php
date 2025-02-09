@@ -19,31 +19,31 @@ class Chat extends BaseType
 
     /**
      * Chat turi. "private", "group", "supergroup" yoki "channel" bo'lishi mumkin.
-     * @var string $type
+     * @var ChatType|string $type
      */
     public ChatType|string $type;
 
     /**
      * Ixtiyoriy. Sarlavha, superguruhlar, kanallar va guruh chatlari uchun.
-     * @var string $title
+     * @var string|null $title
      */
     public ?string $title = null;
 
     /**
      * Ixtiyoriy. Agar mavjud bo'lsa, shaxsiy chatlar, superguruhlar va kanallar uchun foydalanuvchi nomi.
-     * @var string $username
+     * @var string|null $username
      */
     public ?string $username = null;
 
     /**
      * Ixtiyoriy. Shaxsiy chatdagi boshqa tomonning ismi.
-     * @var string $first_name
+     * @var string|null $first_name
      */
     public ?string $first_name = null;
 
     /**
      * Ixtiyoriy. Shaxsiy chatdagi boshqa tomonning familiyasi.
-     * @var string $last_name
+     * @var string|null $last_name
      */
     public ?string $last_name = null;
 
