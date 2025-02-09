@@ -30,63 +30,63 @@ class User extends BaseType
 
     /**
      * Ixtiyoriy. Foydalanuvchi yoki botning familiyasi.
-     * @var string $last_name
+     * @var string|null $last_name
      */
-    public string $last_name;
+    public ?string $last_name = null;
 
     /**
      * Ixtiyoriy. Foydalanuvchi yoki botning foydalanuvchi nomi.
-     * @var string $username
+     * @var string|null $username
      */
-    public string $username;
+    public ?string $username = null;
 
     /**
      * Ixtiyoriy. Foydalanuvchi tilining {@see https://en.wikipedia.org/wiki/IETF_language_tag IETF} tili yorlig'i.
-     * @var string $language_code
+     * @var string|null $language_code
      */
-    public string $language_code;
+    public ?string $language_code = null;
 
     /**
      * Ixtiyoriy. True, agar bu foydalanuvchi Telegram Premium foydalanuvchisi bo'lsa.
-     * @var bool $is_premium
+     * @var bool|null $is_premium
      */
     public ?bool $is_premium = null;
 
     /**
      * Ixtiyoriy. True, agar bu foydalanuvchi botni biriktirma menyusiga qo'shgan bo'lsa.
-     * @var bool $is_blocked
+     * @var bool|null $is_blocked
      */
     public ?bool $added_to_attachment_menu = null;
 
     /**
      * Ixtiyoriy. True, agar botni guruhlarga taklif qilish mumkin bo'lsa. Faqat {@see https://core.telegram.org/bots/api#getme getMe}-da qaytarildi.
-     * @var bool $can_join_groups
+     * @var bool|null $can_join_groups
      */
-    public bool $can_join_groups;
+    public ?bool $can_join_groups = null;
 
     /**
      * Ixtiyoriy. True, agar bot uchun maxfiylik rejimi o'chirilgan bo'lsa. Faqat {@see https://core.telegram.org/bots/api#getme getMe}-da qaytarildi.
-     * @var bool $can_read_all_group_messages
+     * @var bool|null $can_read_all_group_messages
      */
-    public bool $can_read_all_group_messages;
+    public ?bool $can_read_all_group_messages = null;
 
     /**
      * Ixtiyoriy. True, agar bot inline so'rovlarni qo'llab-quvvatlasa. Faqat {@see https://core.telegram.org/bots/api#getme getMe}-da qaytarildi.
-     * @var bool $supports_inline_queries
+     * @var bool|null $supports_inline_queries
      */
-    public bool $supports_inline_queries;
+    public ?bool $supports_inline_queries = null;
 
     /**
      * Ixtiyoriy. True, agar bot o'z xabarlarini qabul qilish uchun Telegram Business hisobiga ulanishi mumkin bo'lsa. Faqat {@see https://core.telegram.org/bots/api#getme getMe}-da qaytarildi.
-     * @var bool $can_connect_to_business
+     * @var bool|null $can_connect_to_business
      */
-    public bool $can_connect_to_business;
+    public ?bool $can_connect_to_business = null;
 
     /**
      * Ixtiyoriy. True, agar botda asosiy veb-ilova bo'lsa. Faqat getMe{@see https://core.telegram.org/bots/api#getme getMe}-da qaytarildi.
-     * @var bool $has_main_web_app
+     * @var bool|null $has_main_web_app
      */
-    public bool $has_main_web_app;
+    public ?bool $has_main_web_app = null;
 
     public static function make(
         int $id,
